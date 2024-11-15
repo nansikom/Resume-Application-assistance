@@ -1,0 +1,178 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            button {
+                color:slateblue;
+                padding: 30px 30px;
+                border-radius: 8px;
+                font-size:16px;
+                cursor:pointer;
+                background-color: whitesmoke;
+            }
+            body{
+                background-image: url('/static/images/360_F.jpg');
+                background-position: center;
+                background-size: cover;
+                background-color: #ffffff;
+                color: aliceblue;
+
+                
+            }
+            #displayText {
+                color:yellowgreen
+            }
+            .text-box{
+                padding:10px;
+                border: 1px solid black;
+                width:1000px;
+                height:1000px
+
+            }
+            textarea{
+                background-color:lightskyblue;
+                padding: 10px;
+                width: 500px;
+                color:white;
+                height: 600px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Soft shadow effect */
+
+            }
+            .container{
+                display: flex;
+                justify-content: space-between;
+                gap:100px;
+                padding :10px;
+
+            }
+            iframe{
+                width:48%;
+                height: 500px;
+                border:1 px solid #ccc;
+                background-color: whitesmoke;
+                padding: 2%;
+                box-sizing: border-box;
+            }
+        </style>
+    </head>
+    <body>
+
+        <h1>JOB AND RESUME MATCHER</h1>
+        <button id ="button">Start</button>
+        <p id="displayText"></p>
+        <button id ="button">Submit</button>
+        <button onclick ="clearframe()">cleardoc</button>
+
+        <script>
+            const button = document.getElementById("button")
+            const textDisplay= document.getElementById("displayText")
+            button.addEventListener("click", function(){
+                    textDisplay.textContent= "Hello from Oregon"
+            });
+            
+            function clearframe(){
+                var iframe= document.getElementById('Resumedisplay');
+                var doc = iframe.contentDocument || iframe.contentWindow.document;
+                doc.open();
+                doc.write(`<html><body>No text extracted yet.</body></html>`);
+                doc.close();
+
+                
+
+            }
+            
+        </script>
+        
+        <div style= "display:flex; gap:20px; justify-content: space-around;">
+            <form action="/uploadform1" method="POST" enctype="multipart/form-data"autocomplete="off">
+                <label for="resumeupload">Upload your resume:</label>
+                <input type="file" name="files" accept=".pdf,.docx,.txt" multiple  onchange="clearIframe()">
+                <input type="submit" value ="Upload form 1">
+            </form>
+            <form action="/uploadform1" method="POST" enctype="multipart/form-data"autocomplete="off">
+                <label for="resumeupload">Upload your resume:</label>
+                <input type="file" name="files" accept=".pdf,.docx,.txt" multiple  onchange="clearIframe()">
+                <input type="submit" value ="Upload form 1">
+            </form>
+        </div>
+    <div style= "display: flex; gap:20px; justify-content: space-around;">
+        <div class="text-box">
+            <h2>Upload Resume and Job Description</h2>
+            <iframe id="Resumedisplay" width="100%" height="500px" src="about:blank " color="white"></iframe>
+            <iframe id="Resumedisplay1" width="100%" height="500px" src="about:blank " color="white"></iframe>
+
+            {% if extracted_texts1 %}
+            <script>
+                var extractedText = "{{ extracted_texts1 | e }}";
+                console.log("extracted text",  extractedText);
+
+                var iframe= document.getElementById('Resumedisplay');
+                var doc = iframe.contentDocument || iframe.contentWindow.document;
+                doc.open();
+                doc.write(` 
+                    <html>
+                    <head>
+                        <style>
+                            body{
+                                background-color:white;
+                                color:black;
+                        
+                            }
+                        </style>
+                    </head>
+                        <body>
+                            <pre>${ extractedText}</pre> <!-- Displays preformatted text -->
+
+                        </body>
+                        </html>
+                    `);
+                    doc.close();
+
+                    
+                </script>
+                {% else %}
+                console.log("No texts extracted yet for second document.");
+
+                {% endif %}
+                {% if extracted_tt %}
+                <script>
+                    var extractedTextt = "{{ extracted_tt | e }}";
+                    console.log("extracted text",  extractedText);
+    
+                    var iframe= document.getElementById('Resumedisplay1');
+                    var doc = iframe.contentDocument || iframe.contentWindow.document;
+                    doc.open();
+                    doc.write(` 
+                        <html>
+                        <head>
+                            <style>
+                                body{
+                                    background-color:white;
+                                    color:black;
+                            
+                                }
+                            </style>
+                        </head>
+                            <body>
+                                <pre>${ extractedText}</pre> <!-- Displays preformatted text -->
+    
+                            </body>
+                            </html>
+                        `);
+                        doc.close();
+    
+                        
+                    </script>
+                    {% else %}
+                    console.log("No texts extracted yet for second document.");
+
+                    {% endif %}
+    
+
+        </div>
+    </div>
+    
+    </body>
+</html>     
+               

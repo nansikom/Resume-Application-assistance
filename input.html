@@ -1,0 +1,100 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            button {
+                color:slateblue;
+                padding: 30px 30px;
+                border-radius: 8px;
+                font-size:16px;
+                cursor:pointer;
+                background-color: lightblue;
+            }
+            body{
+                background-image: url('images/bg.jpg');
+                background-size: cover;
+                background-position: center;
+                
+
+                
+            }
+            #displayText {
+                color:yellowgreen
+            }
+            .text-box{
+                padding:10px;
+                border: 1px solid black;
+                width:1000px;
+                height:1000px
+
+            }
+            textarea{
+                background-color:lightskyblue;
+                padding: 10px;
+                width: 500px;
+                color:white;
+                height: 600px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Soft shadow effect */
+
+            }
+        </style>
+    </head>
+    <body>
+
+        <h1>JOB AND RESUME MATCHER</h1>
+        <button id ="button">Start</button>
+        <p id="displayText"></p>
+        <button id ="button">Submit</button>
+
+        <script>
+            const button = document.getElementById("button")
+            const textDisplay= document.getElementById("displayText")
+            button.addEventListener("click", function(){
+                    textDisplay.textContent= "Hello from Oregon"
+            });
+            
+            
+        </script>
+        
+        <div style= "display:flex; gap:20px; justify-content: space-around;">
+            <form action="/uploadform1" method="POST" enctype="multipart/form-data">
+                <label for="resumeupload">Upload your resume:</label>
+                <input type="file" name="files" accept=".pdf,.docx,.txt" multiple>
+                <input type="submit" value ="Upload form 1">
+            </form>
+        </div>
+    <div style= "display: flex; gap:20px; justify-content: space-around;">
+        <div class="text-box">
+            <h2>Extracted text 1</h2>
+            <iframe id="Resumedisplay" width="100%" height="500px" src="about:blank "></iframe>
+
+            {% if extracted_texts1 %}
+            <script>
+                var extractedText = "{{ extracted_texts1 | e }}";
+                console.log("extracted text",  extractedText);
+
+                var iframe= document.getElementById('Resumedisplay');
+                var doc = iframe.contentDocument || iframe.contentWindow.document;
+                doc.open();
+                doc.write(` 
+                    <html>
+                        <body>
+                            <pre>${ extractedText}</pre> <!-- Displays preformatted text -->
+                        </body>
+                        </html>
+                    `);
+                    doc.close();
+
+                    
+                </script>
+                {% else %}
+                    No texts extracted yet.
+                {% endif %}
+
+        </div>
+    </div>
+    
+    </body>
+</html>     
+               
