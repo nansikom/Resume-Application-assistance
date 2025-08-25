@@ -16,7 +16,7 @@ A simple Flask-based interface for uploading and analyzing files.
 Install the required Python dependencies by running:
 
 bash
-Copy code
+
 pip install -r requirements.txt
 ## Key Dependencies:
 Flask (3.0.3): For web-based functionality.
@@ -28,23 +28,19 @@ pillow (11.0.0): For image processing if needed.
 Clone the repository:
 
 bash
-Copy code
 git clone <repository-url>
 cd resume-assistant
 Install dependencies:
 
 bash
-Copy code
 pip install -r requirements.txt
 Start the Flask server:
 
 bash
-Copy code
 python app.py
 Open your browser and navigate to:
 
 arduino
-Copy code
 http://127.0.0.1:5000
 Upload your master resume and job description in the interface to get results.
 
