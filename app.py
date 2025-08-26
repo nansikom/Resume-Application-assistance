@@ -5,53 +5,19 @@ from flask import Flask,request,render_template
 import pdfplumber
 import re
 from flask import session
+import uuid
+from datetime import datetime
 app = Flask(__name__,template_folder='templates')
 app.secret_key = 'your_secret_key_here'
 
 @app.route('/')
 def index():
     return render_template('index.html')
-'''
-@app.route('/upload',methods=['POST'])
-def upload():
-    files = request.files.getlist('files')
-    text_contents = []
-    for file in files:
-        if file.filename  =='':
-            return "No selected file",400
-        #more like saving the uploaded file into the file storage object file       
-        if file:
-            upload_dir= "uploads"
-            os.makedirs(upload_dir, exist_ok=True)
-        if not os.path.exists(upload_dir):
-            return "Upload directory not created.", 500  # Server Error
-
-        savepath=os.path.join("uploads", file.filename)
-        file.save(savepath)
-        file_ext=os.path.splitext(file.filename)[1].lower()
-        text_content = ""
-        if file_ext == ".pdf":
-            with pdfplumber.open(savepath) as pdf:
-                #reader= PdfReader(f)
-                for page in pdf.pages:
-                    page_text = page.extract_text() 
-                    print(page_text)
-                    if page_text:
-                        text_content += page_text + '\n'
-                        print(text_content)
-        elif file_ext == ".docx":
-            doc = Document(savepath)
-            for para in doc.paragraphs:
-                    text_content += para.text + '\n'
-                    print(text_content)
-        text_contents.append(text_content)
-    return render_template('index.html',extracted_texts=text_contents)
-'''  
 
 
-
-@app.route('/uploadform1',methods=['POST'])
-def uploadform1():
+@app.route('/uploadform',methods=['POST'])
+def uploadform():
+    session['resume_text'] = []
     files = request.files.getlist('files')
     text_contents = []
     common_words=[]
@@ -61,60 +27,88 @@ def uploadform1():
 
     for file in files:
         if file.filename  =='':
-            return "No selected file",400
+            continue
         #more like saving the uploaded file into the file storage object file       
         if file:
             upload_dir= "uploads/form1"
             os.makedirs(upload_dir, exist_ok=True)
-        if not os.path.exists(upload_dir):
-            return "Upload directory not created.", 500  # Server Error
+            # Create unique filename to avoid conflicts
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            file_ext = os.path.splitext(file.filename)[1].lower()
+            unique_filename = f"{timestamp}_{uuid.uuid4().hex[:8]}{file_ext}"
+            savepath = os.path.join(upload_dir, unique_filename)
 
-        savepath=os.path.join("uploads/form1", file.filename)
-        file.save(savepath)
-        file_ext=os.path.splitext(file.filename)[1].lower()
-        text_content = ""
-        if file_ext == ".pdf":
-            with pdfplumber.open(savepath) as pdf:
-                #reader= PdfReader(f)
-                for page in pdf.pages:
-                    page_text = page.extract_text() 
-                    #print(page_text)
-                    if page_text:
-                        text_content += page_text + '\n'
-            #print(text_content)
-        elif file_ext == ".docx":
-            doc = Document(savepath)
-            for para in doc.paragraphs:
-                    text_content += para.text + '\n'
-        session['text_contents'].append(text_content)
-        num_uploaded_files= len(session['text_contents'])
-        print(f"Uploaded text contents:  {session['text_contents']}")
-        print(f"Number of uploaded files:,{num_uploaded_files}")
-    texts1=""
-    texts=""
-    if len(session.get('text_contents', [])) > 1:
+            try:
+                file.save(savepath)
+                text_content= extract_text_from_file(savepath, file_ext)
+                if text_content.strip():  # Only add if content exists
+                    text_contents.append(text_content)
+                os.remove(savepath)  # Clean up file after processing
+            except Exception as e:
+                print(f"Error processing file {file.filename}: {str(e)}")
+                continue
 
-    #if len(session[text_contents]) > 1:
-        texts= session['text_contents'][0]
-        print(texts)
-        texts1=session['text_contents'][1]
-        print(texts1)
-        common_words=wordextraction(texts,texts1)
-        print(common_words)
-    elif len(session['text_contents']) == 1:
-        texts = session['text_contents'][0]
-        #print(texts)
-        # Only set texts1 if there's more than one document uploaded
-        print("Only one document uploaded. No comparison possible.")
-    else:
-        print("No documents uploaded.")
-    print(f"Extracted text 1: {texts}")
-    print(f"Extracted text 2: {texts1}")
-    #print(f"Common words: {common_words}")
+    # store in session as resume
+    session['resume_text'] = text_contents
+    session.modified = True
+
+    return render_template(
+            'index.html',
+            extractedText=session.get('resume_text'),
+            extracted_tt=session.get('job_text')
+        )
+    
+    
+@app.route('/uploadform1',methods=['POST'])
+def uploadform1():
+    session['job_text'] = []
+    files = request.files.getlist('files')
+    text_contents = []
+    common_words=[]
+   # if 'text_contents' not in session:
+    #    session['text_contents']=[]
+    session['text_contents1'] = []
+
+    for file in files:
+        if file.filename  =='':
+            continue
+        #more like saving the uploaded file into the file storage object file       
+        
+        if file:
+            upload_dir= "uploads/form1"
+            os.makedirs(upload_dir, exist_ok=True)
+            # Create unique filename to avoid conflicts
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            file_ext = os.path.splitext(file.filename)[1].lower()
+            unique_filename = f"{timestamp}_{uuid.uuid4().hex[:8]}{file_ext}"
+            savepath = os.path.join(upload_dir, unique_filename)
+
+            try:
+                file.save(savepath)
+                text_content= extract_text_from_file(savepath, file_ext)
+                if text_content.strip():  # Only add if content exists
+                    text_contents.append(text_content)
+                os.remove(savepath)  # Clean up file after processing
+            except Exception as e:
+                print(f"Error processing file {file.filename}: {str(e)}")
+                continue
+
+    # store in session as resume
+        session['job_text'] = text_contents
+        session.modified = True
+
+    return render_template(
+            'index.html',
+            extractedText=session.get('resume_text'),
+            extracted_tt=session.get('job_text')
+        )
     
 
-    
-    return render_template('index.html',extracted_texts1=session['text_contents'],extracted_tt= session['text_contents'],common_words=common_words)
+@app.route('/clear_session', methods=['POST'])
+def clear_session():
+    """Endpoint to manually clear session data"""
+    session.clear()
+    return render_template('index.html')
 
 def wordextraction(text, text2):
         print("j")
@@ -135,8 +129,40 @@ def wordextraction(text, text2):
             if word in token:
                 cats.append(word)
         return cats
+def extract_text_from_file(filepath, file_ext):
+        text_content = ""
+        if file_ext == ".pdf":
+            with pdfplumber.open(filepath) as pdf:
+                #reader= PdfReader(f)
+                for page in pdf.pages:
+                    page_text = page.extract_text() 
+                    #print(page_text)
+                    if page_text:
+                        text_content += page_text + '\n'
+            #print(text_content)
+        elif file_ext == ".docx":
+            doc = Document(filepath)
+            for para in doc.paragraphs:
+                    text_content += para.text + '\n'
+        return text_content
+
+@app.before_request
+def before_request():
+    # create a new session ID if the ID doesnt exist.
+    if '_id' not in session:
+        session['_id'] = str(uuid.uuid4())
 if __name__== '__main__':
   app.run(debug=True)
   '''
   Find a  way of inputting the documents and searching thru them 
   '''
+
+
+
+
+
+
+
+
+
+

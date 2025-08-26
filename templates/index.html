@@ -12,10 +12,8 @@
                 background-color: whitesmoke;
             }
             body{
-                background-image: url('/static/images/360_F.jpg');
-                background-position: center;
-                background-size: cover;
-                background-color: #ffffff;
+              
+                background-color: #23234b;
                 color: aliceblue;
 
                 
@@ -23,17 +21,11 @@
             #displayText {
                 color:yellowgreen
             }
-            .text-box{
-                padding:10px;
-                border: 1px solid black;
-                width:1000px;
-                height:1000px
-
-            }
+           
             textarea{
                 background-color:lightskyblue;
                 padding: 10px;
-                width: 500px;
+                width: 95%;
                 color:white;
                 height: 600px;
                 box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Soft shadow effect */
@@ -47,11 +39,10 @@
 
             }
             iframe{
-                width:48%;
-                height: 500px;
-                border:1 px solid #ccc;
+              
+                border:1px solid #ccc;
                 background-color: whitesmoke;
-                padding: 2%;
+                padding: 10%;
                 box-sizing: border-box;
             }
         </style>
@@ -59,20 +50,15 @@
     <body>
 
         <h1>JOB AND RESUME MATCHER</h1>
-        <button id ="button">Start</button>
         <p id="displayText"></p>
-        <button id ="button">Submit</button>
-        <button onclick ="clearframe()">cleardoc</button>
+
 
         <script>
-            const button = document.getElementById("button")
-            const textDisplay= document.getElementById("displayText")
-            button.addEventListener("click", function(){
-                    textDisplay.textContent= "Hello from Oregon"
-            });
+           
             
             function clearframe(){
                 var iframe= document.getElementById('Resumedisplay');
+
                 var doc = iframe.contentDocument || iframe.contentWindow.document;
                 doc.open();
                 doc.write(`<html><body>No text extracted yet.</body></html>`);
@@ -81,30 +67,38 @@
                 
 
             }
-            
+            function clearframe1 (){
+                var iframe1= document.getElementById('Resumedisplay1');
+                var doc1 = iframe1.contentDocument || iframe1.contentWindow.document;
+                doc1.open();
+                doc1.write(`<html><body>No text extracted yet.</body></html>`);
+                doc1.close();
+
+            }
         </script>
         
         <div style= "display:flex; gap:20px; justify-content: space-around;">
-            <form action="/uploadform1" method="POST" enctype="multipart/form-data"autocomplete="off">
+            <form action="/uploadform" method="POST" enctype="multipart/form-data"autocomplete="off">
                 <label for="resumeupload">Upload your resume:</label>
-                <input type="file" name="files" accept=".pdf,.docx,.txt" multiple  onchange="clearIframe()">
-                <input type="submit" value ="Upload form 1">
+                <input type="file" name="files" accept=".pdf,.docx,.txt" multiple  onchange="clearframe()">
+                <input type="submit" value ="Upload form ">
             </form>
             <form action="/uploadform1" method="POST" enctype="multipart/form-data"autocomplete="off">
                 <label for="resumeupload">Upload your resume:</label>
-                <input type="file" name="files" accept=".pdf,.docx,.txt" multiple  onchange="clearIframe()">
+                <input type="file" name="files" accept=".pdf,.docx,.txt" multiple  onchange="clearframe1()">
                 <input type="submit" value ="Upload form 1">
             </form>
         </div>
-    <div style= "display: flex; gap:20px; justify-content: space-around;">
+    <div style= "display: flex; gap:40px; justify-content: space-around;">
         <div class="text-box">
             <h2>Upload Resume and Job Description</h2>
-            <iframe id="Resumedisplay" width="100%" height="500px" src="about:blank " color="white"></iframe>
-            <iframe id="Resumedisplay1" width="100%" height="500px" src="about:blank " color="white"></iframe>
-
-            {% if extracted_texts1 %}
+            <div style = "display: flex; gap: 50px;">
+            <iframe id="Resumedisplay" width="700px" height="800px" src="about:blank " color="white"></iframe>
+            <iframe id="Resumedisplay1" width="700px" height="800px" src="about:blank " color="white"></iframe>
+            </div>
+            {% if extractedText %}
             <script>
-                var extractedText = "{{ extracted_texts1 | e }}";
+                var extractedText = {{ extractedText | tojson }};
                 console.log("extracted text",  extractedText);
 
                 var iframe= document.getElementById('Resumedisplay');
@@ -137,8 +131,8 @@
                 {% endif %}
                 {% if extracted_tt %}
                 <script>
-                    var extractedTextt = "{{ extracted_tt | e }}";
-                    console.log("extracted text",  extractedText);
+                    var extractedTextt = {{ extracted_tt | tojson }};
+                    console.log("extracted text",  extractedTextt);
     
                     var iframe= document.getElementById('Resumedisplay1');
                     var doc = iframe.contentDocument || iframe.contentWindow.document;
@@ -155,7 +149,7 @@
                             </style>
                         </head>
                             <body>
-                                <pre>${ extractedText}</pre> <!-- Displays preformatted text -->
+                                <pre>${ extractedTextt}</pre> <!-- Displays preformatted text -->
     
                             </body>
                             </html>
@@ -168,6 +162,15 @@
                     console.log("No texts extracted yet for second document.");
 
                     {% endif %}
+
+                     <button id ="button">Submit</button>
+                     <span style = "display:inline-block; width:400px;"></span>
+
+                     <button onclick ="clearframe1()">cleardoc1</button>
+
+                     <span style = "display:inline-block; width:700px;"></span>
+                     <button onclick ="clearframe()">cleardoc</button>
+
     
 
         </div>
