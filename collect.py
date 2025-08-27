@@ -181,7 +181,7 @@ def wordextraction(text, text2):
     # Split into words
     tokens1 = set(cleaned_text1.split())
     tokens2 = set(cleaned_text2.split())
-    
+
     # Find common words (excluding very short words)
     common_words = [word for word in tokens1.intersection(tokens2) if len(word) > 2]
     
