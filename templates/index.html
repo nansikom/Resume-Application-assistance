@@ -170,8 +170,38 @@
 
                      <span style = "display:inline-block; width:700px;"></span>
                      <button onclick ="clearframe()">cleardoc</button>
-
-    
+                     <button onclick = "analyzeMatch()" style = "background-color: #4CAF50; color: white; padding: 15px 30px; border-radius: 8px; font-size: 16px; cursor:pointer; margin-left:20px">
+                             🤖 Analyze Match
+                     </button>
+                     <div id ="results" style="display: none; background-color: white;padding: 30px; margin:20px 0; color: black;border-radius:10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
+                        <h3>📊 Match Analysis Results</h3> 
+                        <div id = "result-content"></div>
+                     </div>
+                     <script>
+                        async function analyzeMatch( ) {
+                            try{
+                                const response =await fetch('/simple_match');
+                                const data = await response.json();
+                                if (data.error){
+                                    alert(data.error);
+                                    return;
+                
+                                }
+                                document.getElementById('results').style.display='block';
+                                document.getElementById('result-content').innerHTML=`
+                                <h4>🎯 ${data.interpretation}</h4>
+                                <p><strong>Matching keywords:</strong> ${data.common_words.join(', ')}</p>
+                                <p><strong>Matching percentage:</strong> ${data.match_percentage}</p>
+                                <p><strong> Total Matches: </strong> ${data.total_common} out of ${data.job_word_count} job requirements</p>
+                                `;
+                                document.getElementById('results').scrollIntoView({behavior: 'smooth'});
+                            }
+                            catch(error){
+                                alert('Error analyzing macth:' + error.message);
+                            }
+                            
+                        }
+                     </script>
 
         </div>
     </div>

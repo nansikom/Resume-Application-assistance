@@ -109,7 +109,70 @@ def clear_session():
     """Endpoint to manually clear session data"""
     session.clear()
     return render_template('index.html')
+@app.route('/debug')
+def debug_session():
+    """Simple route to see what is happening in your session"""
+    return {
+        # if there isjob text yes if nothing return an empty list.
+        'return_text': session.get('resume_text', []),
+        'job_text': session.get('job_text', []),
+        'session_id': session.get('_id', 'No ID'),
+        'total_resume_docs':len(session.get('resume_text', [])),
+        'total_job_docs': len(session.get('resume_text', [])),
+        'total_job_docs': len(session.get('job_text', [])),
 
+    }
+@app.route('/stats')
+def document_stats():
+    """Show basic stats about the uploaded documents"""
+    resume_texts = session.get('resume_text', [])
+    job_texts = session.get('job_text', [])
+
+    #Combine all resume texts and job texts 
+    full_resume =' '.join(resume_texts) if resume_texts else ''
+    full_job = ' '.join(job_texts) if job_texts else ''
+    return {
+        'resume_stats':{
+            'total_words': len(full_resume.split()) if full_resume else 0,
+            'total_characters': len(full_resume),
+            'documents_uploaded': len(resume_texts)
+        },
+        'job_stats':{
+            'total_words': len(full_job.split()) if full_job else 0,
+            'total_characters': len(full_job),
+            'documents_uploaded': len(job_texts)
+        }
+    }
+
+@app.route('/simple_match')
+def simple_match():
+    """Find common words between resume and job description"""   
+    resume_texts = session.get('resume_text', [] )
+    print("this resume",resume_texts)
+    job_texts = session.get('job_text', []) 
+    print("this job_texts", job_texts) 
+    if not resume_texts or not job_texts:
+        return {'error': 'Need both the resume and job description uploaded'}  
+    stop_words ={'the', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for', 'of', 'with', 'by', 'a', 'an', 'is', 'are', 'was', 'were', 'be', 'been', 'have', 'has', 'had', 'do', 'does', 'did', 'will', 'would', 'could', 'should'}
+    
+    # Get text and clean it
+    #This combines all the text
+    full_resume =' '.join(resume_texts).lower()
+    full_job = ' '.join(job_texts).lower()
+    resume_words = set([word for word in full_resume.split() if word not in stop_words and len(word) > 2])  
+    job_words = set([word for word in full_job.split() if word not in stop_words and len(word) > 2]) 
+    common_words = resume_words.intersection(job_words)    
+    # Calculate 
+    # unique words comes from 
+    #total_unique_words = len(resume_words.union(job_words))  
+    match_percentage = (len(common_words)/ len(job_words))* 100 if len(job_words) > 0 else 0
+    return{
+        'common_words': list(common_words)[:20],
+        'total_common': len(common_words),
+        'match_percentage':round(match_percentage, 1),
+        'resume_word_count': len(resume_words),
+        'job_word_count': len(job_words)
+    }
 def wordextraction(text, text2):
         print("j")
         pattern= r'[^\w\s]'
