@@ -5,6 +5,10 @@ An intelligent tool designed to help you optimize your resume for specific job a
 ## 🎯 Overview
 
 This project provides a comprehensive solution for resume customization and job application assistance. It compares your master resume against job descriptions to identify common keywords, highlight optimization opportunities, and help you tailor your resume for maximum impact.
+
+## 🔗 Project Links
+
+- **Youtube Submission**: [Youtube Link]( https://youtu.be/44M-OE9MEac)
 Here is  the video link https://youtu.be/44M-OE9MEac
 
 ## ✨ Key Features
