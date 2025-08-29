@@ -9,7 +9,6 @@ This project provides a comprehensive solution for resume customization and job 
 ## 🔗 Project Links
 
 - **Youtube Submission**: [Youtube Link]( https://youtu.be/44M-OE9MEac)
-Here is  the video link https://youtu.be/44M-OE9MEac
 
 ## ✨ Key Features
 
