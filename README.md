@@ -46,7 +46,6 @@ Here is  the video link https://youtu.be/44M-OE9MEac
 3. **Launch the Application**
    ```bash
    python app.py
-   python input.py
    ```
 
 4. **Access the Web Interface**
@@ -74,7 +73,7 @@ Here is  the video link https://youtu.be/44M-OE9MEac
    - The server will start on port 5000
 
 2. **Upload Documents**
-   - Navigate to `http://127.0.0.1:5000`
+   - Navigate to address pasted in the console http://-----------
    - Upload your master resume (PDF or DOCX)
    - Upload the target job description (PDF or DOCX)
 
