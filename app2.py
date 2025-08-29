@@ -153,3 +153,31 @@ def analyze():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+
+
+'''
+    for file in files:
+        if file.filename  =='':
+            continue
+        #more like saving the uploaded file into the file storage object file       
+        
+        if file:
+            upload_dir= "uploads/form1"
+            os.makedirs(upload_dir, exist_ok=True)
+            # Create unique filename to avoid conflicts
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            file_ext = os.path.splitext(file.filename)[1].lower()
+            unique_filename = f"{timestamp}_{uuid.uuid4().hex[:8]}{file_ext}"
+            savepath = os.path.join(upload_dir, unique_filename)
+
+            try:
+                file.save(savepath)
+                text_content= extract_text_from_file(savepath, file_ext)
+                if text_content.strip():  # Only add if content exists
+                    text_contents.append(text_content)
+                os.remove(savepath)  # Clean up file after processing
+            except Exception as e:
+                print(f"Error processing file {file.filename}: {str(e)}")
+                continue
+'''

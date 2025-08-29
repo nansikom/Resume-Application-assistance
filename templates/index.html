@@ -2,6 +2,10 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title> 🤖JOB AND RESUME MATCHER</title>
+
         <style>
             button {
                 color:slateblue;
@@ -13,8 +17,8 @@
             }
             body{
               
-                background-color: #23234b;
-                color: aliceblue;
+                background-color:#4A90E2;
+                color: black;
 
                 
             }
@@ -23,12 +27,16 @@
             }
            
             textarea{
-                background-color:lightskyblue;
+                background-color:whitesmoke;
                 padding: 10px;
-                width: 95%;
-                color:white;
-                height: 600px;
+                width: 80%;
+                color: black;
+                height: 700px;
                 box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Soft shadow effect */
+                 box-sizing: border-box;
+
+            /* rounded corners only */
+                border-radius: 15px;
 
             }
             .container{
@@ -36,22 +44,110 @@
                 justify-content: space-between;
                 gap:100px;
                 padding :10px;
+            }
+           
+             iframe {
+            border: 1px solid #ccc;
+            background-color: whitesmoke;
+            padding: 10%;
+            box-sizing: border-box;
 
+            /* rounded corners only */
+            border-radius: 15px;   /* try 10px–30px for how soft you want the edges */
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2); /* optional: nice soft shadow */
             }
-            iframe{
-              
-                border:1px solid #ccc;
-                background-color: whitesmoke;
-                padding: 10%;
-                box-sizing: border-box;
+            .uploadpannel{
+                padding:18px;
             }
+            .fixed-btn {
+            width: 200px;          /* Fixed width */
+            height: 100px;          /* Fixed height */
+            background-color: whitesmoke;
+            color: slateblue;
+            border-radius: 8px;
+            font-size: 16px;
+            padding: 0;            /* Remove extra padding */
+            border: 2px solid #ccc;
+            cursor: pointer;
+            box-sizing: border-box;
+            transition: none;      /* Prevent size change on hover/focus */
+        }
+          
+        .fixedanaa-btn {
+            background: linear-gradient(135deg, #48bb78, #38a169);
+            color: white;
+            border: none;
+            padding: 20px 60px;
+            border-radius: 50px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(72, 187, 120, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        .fixed-btn:focus, .fixed-btn:active {
+            outline: none;
+            border: 2px solid #ccc;
+        }
+        .upload-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: black;
+            border: none;
+            padding: 15px 35px;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+            margin-top: 15px;
+        }
+        .upload-area {
+            width: 500px;
+            height:500px;
+            border: 3px dashed #cbd5e0;
+            padding: 40px 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            border-radius: 20px;
+            color:black;
+            background: linear-gradient(145deg, #f8fafc, #edf2f7);
+        }
+        .upload-area1 {
+            width: 500px;
+            height:500px;
+            border: 3px dashed #cbd5e0;
+            padding: 40px 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            border-radius: 20px;
+            background: linear-gradient(145deg, #f8fafc, #edf2f7);
+        }
+        .uploadtext{
+           color:black;
+           font-size:10px
+        }
         </style>
     </head>
     <body>
-
-        <h1>JOB AND RESUME MATCHER</h1>
-        <p id="displayText"></p>
-
+        
+       <div style="display: flex; justify-content: center; margin-top: 60px;"> 
+        <h1>🤖 JOB AND RESUME MATCHER</h1>
+       </div>
 
         <script>
            
@@ -77,103 +173,80 @@
             }
         </script>
         
-        <div style= "display:flex; gap:20px; justify-content: space-around;">
+        <div style= "display:flex; gap:80px; justify-content: space-around;">
             <form action="/uploadform" method="POST" enctype="multipart/form-data"autocomplete="off">
-                <label for="resumeupload">Upload your resume:</label>
-                <input type="file" name="files" accept=".pdf,.docx,.txt" multiple  onchange="clearframe()">
-                <input type="submit" value ="Upload form ">
+                <label for="resumeupload">
+                    <h2>📄  Upload your resume:</h2>
+                </label>
+                    
+                    <div class="upload-area" id ="Resumedisplay ">
+                            <textarea id="Resumedisplay" name="Resumedisplay" rows="12" cols="60" placeholder="Paste your resume here..." required onchnage="clearframe()"></textarea>
+
+                    <div class="uploadtext">
+                        <p>Drag & Drop your file here</p>
+                        <p>or</p>
+                        <p>Click to select a file</p>
+                        <p>(Supported formats: .pdf, .docx)</p>
+                    </div>
+                    <button type="submit" class="upload-btn" value ="Upload form " style="color:black;"> Upload Resume</button>
+
+                                    
+                </div>
             </form>
-            <form action="/uploadform1" method="POST" enctype="multipart/form-data"autocomplete="off">
-                <label for="resumeupload">Upload your resume:</label>
-                <input type="file" name="files" accept=".pdf,.docx,.txt" multiple  onchange="clearframe1()">
-                <input type="submit" value ="Upload form 1">
+            <form action="/uploadform1" method="POST" autocomplete="off">
+                <label for="jobdesc">
+                       <h2> 💼 Paste your job description:</h2>
+                    </label>
+                <div class="upload-area1" id ="jobdesc-upload">
+                    
+                    <textarea id="jobdesc-textarea" name="jobdesc" rows="12" cols="60" placeholder="Paste your job description here..." required></textarea>
+                    <div class="uploadtext" name="jobdesc">
+                        <p>Paste your job description here:</p><br>
+
+                    </div>
+                    <button type="submit" class="upload-btn" value ="Submit job description"> Submit job description</button>
+
+                </div>
+
             </form>
         </div>
     <div style= "display: flex; gap:40px; justify-content: space-around;">
-        <div class="text-box">
-            <h2>Upload Resume and Job Description</h2>
-            <div style = "display: flex; gap: 50px;">
-            <iframe id="Resumedisplay" width="700px" height="800px" src="about:blank " color="white"></iframe>
-            <iframe id="Resumedisplay1" width="700px" height="800px" src="about:blank " color="white"></iframe>
-            </div>
+       
             {% if extractedText %}
+             <div id="Resume-display" style="border:1px solid #ccc; padding:10px; border-radius:8px; background:white;"></div>
+
             <script>
+                
                 var extractedText = {{ extractedText | tojson }};
-                console.log("extracted text",  extractedText);
 
-                var iframe= document.getElementById('Resumedisplay');
-                var doc = iframe.contentDocument || iframe.contentWindow.document;
-                doc.open();
-                doc.write(` 
-                    <html>
-                    <head>
-                        <style>
-                            body{
-                                background-color:white;
-                                color:black;
-                        
-                            }
-                        </style>
-                    </head>
-                        <body>
-                            <pre>${ extractedText}</pre> <!-- Displays preformatted text -->
+                document.getElementById('Resume-display').innerHTML = `<pre style="white-space: pre-wrap; word-wrap: break-word;">${extractedText}</pre>`;
 
-                        </body>
-                        </html>
-                    `);
-                    doc.close();
-
-                    
                 </script>
                 {% else %}
-                console.log("No texts extracted yet for second document.");
 
                 {% endif %}
                 {% if extracted_tt %}
+                <div id="jobdesc-display" style="border:1px solid #ccc; padding:10px; border-radius:8px; background:white;"></div>
+
                 <script>
                     var extractedTextt = {{ extracted_tt | tojson }};
-                    console.log("extracted text",  extractedTextt);
-    
-                    var iframe= document.getElementById('Resumedisplay1');
-                    var doc = iframe.contentDocument || iframe.contentWindow.document;
-                    doc.open();
-                    doc.write(` 
-                        <html>
-                        <head>
-                            <style>
-                                body{
-                                    background-color:white;
-                                    color:black;
-                            
-                                }
-                            </style>
-                        </head>
-                            <body>
-                                <pre>${ extractedTextt}</pre> <!-- Displays preformatted text -->
-    
-                            </body>
-                            </html>
-                        `);
-                        doc.close();
-    
-                        
+
+                    document.getElementById('jobdesc-display').innerHTML =`<pre style="white-space: pre-wrap; word-wrap: break-word;">${extractedTextt}</pre>`;
+
                     </script>
                     {% else %}
-                    console.log("No texts extracted yet for second document.");
 
                     {% endif %}
 
-                     <button id ="button">Submit</button>
-                     <span style = "display:inline-block; width:400px;"></span>
+                     
+                    <div style="position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);">
 
-                     <button onclick ="clearframe1()">cleardoc1</button>
+                        <button onclick = "analyzeMatch()" class=" fixedanaa-btn">
+                                ✨ Analyze Match with ML
+                        </button>
+                     </div>
+                     <div id ="results" style="display: none;  justify-content: center;  background-color: white;padding: 30px; margin:20px 0; color: black;border-radius:10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
 
-                     <span style = "display:inline-block; width:700px;"></span>
-                     <button onclick ="clearframe()">cleardoc</button>
-                     <button onclick = "analyzeMatch()" style = "background-color: #4CAF50; color: white; padding: 15px 30px; border-radius: 8px; font-size: 16px; cursor:pointer; margin-left:20px">
-                             🤖 Analyze Match
-                     </button>
-                     <div id ="results" style="display: none; background-color: white;padding: 30px; margin:20px 0; color: black;border-radius:10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
                         <h3>📊 Match Analysis Results</h3> 
                         <div id = "result-content"></div>
                      </div>
@@ -198,8 +271,7 @@
                             }
                             catch(error){
                                 alert('Error analyzing macth:' + error.message);
-                            }
-                            
+                            }            
                         }
                      </script>
 

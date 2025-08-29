@@ -18,13 +18,20 @@ def index():
 @app.route('/uploadform',methods=['POST'])
 def uploadform():
     session['resume_text'] = []
+    Resumedisplay= request.form.get('Resumedisplay', '').strip()
     files = request.files.getlist('files')
     text_contents = []
-    common_words=[]
-   # if 'text_contents' not in session:
-    #    session['text_contents']=[]
-    session['text_contents'] = []
+    if 'text_contents' not in session:
+        session['text_contents']=[]
+    #session['text_contents'] = []
+    if Resumedisplay:
+        text_contents.append(Resumedisplay)
+        print(text_contents)
 
+    else:
+        print("No resume text provided.")
+
+    ''''
     for file in files:
         if file.filename  =='':
             continue
@@ -47,7 +54,7 @@ def uploadform():
             except Exception as e:
                 print(f"Error processing file {file.filename}: {str(e)}")
                 continue
-
+'''
     # store in session as resume
     session['resume_text'] = text_contents
     session.modified = True
@@ -62,40 +69,23 @@ def uploadform():
 @app.route('/uploadform1',methods=['POST'])
 def uploadform1():
     session['job_text'] = []
+    jobdesc= request.form.get('jobdesc', '').strip()
     files = request.files.getlist('files')
     text_contents = []
-    common_words=[]
-   # if 'text_contents' not in session:
-    #    session['text_contents']=[]
-    session['text_contents1'] = []
+    if 'text_contents' not in session:
+       session['text_contents']=[]
+    if jobdesc:
+        text_contents.append(jobdesc)
+        print(text_contents)
+    else:
+        print("No job description provided.")
 
-    for file in files:
-        if file.filename  =='':
-            continue
-        #more like saving the uploaded file into the file storage object file       
-        
-        if file:
-            upload_dir= "uploads/form1"
-            os.makedirs(upload_dir, exist_ok=True)
-            # Create unique filename to avoid conflicts
-            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-            file_ext = os.path.splitext(file.filename)[1].lower()
-            unique_filename = f"{timestamp}_{uuid.uuid4().hex[:8]}{file_ext}"
-            savepath = os.path.join(upload_dir, unique_filename)
 
-            try:
-                file.save(savepath)
-                text_content= extract_text_from_file(savepath, file_ext)
-                if text_content.strip():  # Only add if content exists
-                    text_contents.append(text_content)
-                os.remove(savepath)  # Clean up file after processing
-            except Exception as e:
-                print(f"Error processing file {file.filename}: {str(e)}")
-                continue
+  #  session['text_contents1'] = []
 
     # store in session as resume
-        session['job_text'] = text_contents
-        session.modified = True
+    session['job_text'] = text_contents
+    session.modified = True
 
     return render_template(
             'index.html',
@@ -167,7 +157,7 @@ def simple_match():
     #total_unique_words = len(resume_words.union(job_words))  
     match_percentage = (len(common_words)/ len(job_words))* 100 if len(job_words) > 0 else 0
     return{
-        'common_words': list(common_words)[:20],
+        'common_words': list(common_words)[:40],
         'total_common': len(common_words),
         'match_percentage':round(match_percentage, 1),
         'resume_word_count': len(resume_words),
