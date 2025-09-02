@@ -101,6 +101,8 @@ resume-assistant/
 ├── static/             # CSS, JS, images
 └── uploads/           # Temporary file storage
 ```
+### A little preview 
+![Sample preview](img/resumepreview.png)
 
 ## 🌟 Future Enhancements
 
