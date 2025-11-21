@@ -1,283 +1,750 @@
-
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title> 🤖JOB AND RESUME MATCHER</title>
-
-        <style>
-            button {
-                color:slateblue;
-                padding: 30px 30px;
-                border-radius: 8px;
-                font-size:16px;
-                cursor:pointer;
-                background-color: whitesmoke;
-            }
-            body{
-              
-                background-color:#4A90E2;
-                color: black;
-
-                
-            }
-            #displayText {
-                color:yellowgreen
-            }
-           
-            textarea{
-                background-color:whitesmoke;
-                padding: 10px;
-                width: 80%;
-                color: black;
-                height: 700px;
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Soft shadow effect */
-                 box-sizing: border-box;
-
-            /* rounded corners only */
-                border-radius: 15px;
-
-            }
-            .container{
-                display: flex;
-                justify-content: space-between;
-                gap:100px;
-                padding :10px;
-            }
-           
-             iframe {
-            border: 1px solid #ccc;
-            background-color: whitesmoke;
-            padding: 10%;
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Matcher - ATS Optimization Tool</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
             box-sizing: border-box;
+        }
 
-            /* rounded corners only */
-            border-radius: 15px;   /* try 10px–30px for how soft you want the edges */
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2); /* optional: nice soft shadow */
-            }
-            .uploadpannel{
-                padding:18px;
-            }
-            .fixed-btn {
-            width: 200px;          /* Fixed width */
-            height: 100px;          /* Fixed height */
-            background-color: whitesmoke;
-            color: slateblue;
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #17203D 0%, #051622 100%);
+            min-height: 100vh;
+            color: #ffffff;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            padding: 3rem 0 2rem;
+            color: #ffffff;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #1ba098 0%, #deb992 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            color: #deb992;
+            font-weight: 400;
+        }
+
+        /* Main Card */
+        .main-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            padding: 3rem;
+            margin-top: 2rem;
+        }
+
+        /* Input Section */
+        .input-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .input-section {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .input-section label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #4a5568;
+            margin-bottom: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 200px;
+            padding: 1rem;
+            border: 2px solid #e2e8f0;
             border-radius: 8px;
-            font-size: 16px;
-            padding: 0;            /* Remove extra padding */
-            border: 2px solid #ccc;
-            cursor: pointer;
-            box-sizing: border-box;
-            transition: none;      /* Prevent size change on hover/focus */
+            font-family: inherit;
+            font-size: 0.95rem;
+            resize: vertical;
+            transition: all 0.2s;
         }
-          
-        .fixedanaa-btn {
-            background: linear-gradient(135deg, #48bb78, #38a169);
-            color: white;
-            border: none;
-            padding: 20px 60px;
-            border-radius: 50px;
-            font-size: 1.3rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 8px 25px rgba(72, 187, 120, 0.3);
-            position: relative;
-            overflow: hidden;
-        }
-        .fixed-btn:focus, .fixed-btn:active {
+
+        textarea:focus {
             outline: none;
-            border: 2px solid #ccc;
+            border-color: #1ba098;
+            box-shadow: 0 0 0 3px rgba(27, 160, 152, 0.2);
         }
-        .upload-btn {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: black;
+
+        textarea::placeholder {
+            color: #a0aec0;
+        }
+
+        /* Buttons */
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin: 2rem 0;
+        }
+
+        button {
+            padding: 0.875rem 2rem;
             border: none;
-            padding: 15px 35px;
-            border-radius: 25px;
+            border-radius: 8px;
             font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
-            margin-top: 15px;
+            transition: all 0.2s;
+            font-family: inherit;
         }
-        .upload-area {
-            width: 500px;
-            height:500px;
-            border: 3px dashed #cbd5e0;
-            padding: 40px 20px;
+
+        .btn-primary {
+            background: linear-gradient(135deg, #1ba098 0%, #6552D0 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(27, 160, 152, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(27, 160, 152, 0.6);
+            background: linear-gradient(135deg, #6552D0 0%, #1ba098 100%);
+        }
+
+        .btn-secondary {
+            background: #f7fafc;
+            color: #4a5568;
+            border: 2px solid #e2e8f0;
+        }
+
+        .btn-secondary:hover {
+            background: #edf2f7;
+        }
+
+        /* Results Section */
+        .results-section {
+            display: none;
+            margin-top: 3rem;
+            padding-top: 3rem;
+            border-top: 2px solid #e2e8f0;
+        }
+
+        .results-header {
             text-align: center;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            position: relative;
-            min-height: 200px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            border-radius: 20px;
-            color:black;
-            background: linear-gradient(145deg, #f8fafc, #edf2f7);
+            margin-bottom: 2rem;
         }
-        .upload-area1 {
-            width: 500px;
-            height:500px;
-            border: 3px dashed #cbd5e0;
-            padding: 40px 20px;
+
+        .results-header h2 {
+            font-size: 1.75rem;
+            color: #2d3748;
+            margin-bottom: 0.5rem;
+        }
+
+        .match-score {
+            display: inline-block;
+            font-size: 3rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #1ba098 0%, #6552D0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .result-card {
+            background: #f7fafc;
+            border-radius: 12px;
+            padding: 1.5rem;
+            border-left: 4px solid;
+        }
+
+        .result-card.matched {
+            border-left-color: #1ba098;
+        }
+
+        .result-card.missing {
+            border-left-color: #deb992;
+        }
+
+        .result-card h3 {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            color: #2d3748;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .result-card h3 .icon {
+            font-size: 1.25rem;
+        }
+
+        .keyword-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .keyword-tag {
+            padding: 0.375rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .keyword-tag.matched {
+            background: rgba(27, 160, 152, 0.2);
+            color: #1ba098;
+            border: 1px solid #1ba098;
+        }
+
+        .keyword-tag.missing {
+            background: rgba(222, 185, 146, 0.2);
+            color: #deb992;
+            border: 1px solid #deb992;
+        }
+
+        .stats-row {
+            display: flex;
+            justify-content: space-around;
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background: #f7fafc;
+            border-radius: 12px;
+        }
+
+        .stat-item {
             text-align: center;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            position: relative;
-            min-height: 200px;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1ba098;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: #718096;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 0.25rem;
+        }
+
+        /* Loading State */
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: #718096;
+        }
+
+        .spinner {
+            border: 3px solid #e2e8f0;
+            border-top: 3px solid #1ba098;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+        
+        /* Bullet Point Suggestions */
+        .suggestions-section {
+            margin-top: 2rem;
+            padding: 2rem;
+            background: linear-gradient(135deg, rgba(101, 82, 208, 0.1) 0%, rgba(27, 160, 152, 0.1) 100%);
+            border-radius: 12px;
+            border: 2px solid #6552D0;
+        }
+        
+        .suggestions-section h3 {
+            color: #2d3748;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
             display: flex;
-            flex-direction: column;
-            justify-content: center;
-            border-radius: 20px;
-            background: linear-gradient(145deg, #f8fafc, #edf2f7);
+            align-items: center;
+            gap: 0.5rem;
         }
-        .uploadtext{
-           color:black;
-           font-size:10px
+        
+        .suggestions-section h3 .icon {
+            font-size: 1.75rem;
         }
-        </style>
-    </head>
-    <body>
         
-       <div style="display: flex; justify-content: center; margin-top: 60px;"> 
-        <h1>🤖 JOB AND RESUME MATCHER</h1>
-       </div>
-
-        <script>
-           
-            
-            function clearframe(){
-                var iframe= document.getElementById('Resumedisplay');
-
-                var doc = iframe.contentDocument || iframe.contentWindow.document;
-                doc.open();
-                doc.write(`<html><body>No text extracted yet.</body></html>`);
-                doc.close();
-
-                
-
-            }
-            function clearframe1 (){
-                var iframe1= document.getElementById('Resumedisplay1');
-                var doc1 = iframe1.contentDocument || iframe1.contentWindow.document;
-                doc1.open();
-                doc1.write(`<html><body>No text extracted yet.</body></html>`);
-                doc1.close();
-
-            }
-        </script>
+        .bullet-points {
+            list-style: none;
+            padding: 0;
+        }
         
-        <div style= "display:flex; gap:80px; justify-content: space-around;">
-            <form action="/uploadform" method="POST" enctype="multipart/form-data"autocomplete="off">
-                <label for="resumeupload">
-                    <h2>📄  Upload your resume:</h2>
-                </label>
-                    
-                    <div class="upload-area" id ="Resumedisplay ">
-                            <textarea id="Resumedisplay" name="Resumedisplay" rows="12" cols="60" placeholder="Paste your resume here..." required onchnage="clearframe()"></textarea>
+        .bullet-points li {
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+            background: white;
+            border-radius: 8px;
+            border-left: 4px solid #1ba098;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s;
+            color:#051622;
+        }
+        
+        .bullet-points li:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        .bullet-points li::before {
+            content: "•";
+            color: #1ba098;
+            font-weight: bold;
+            font-size: 1.5rem;
+            margin-right: 0.5rem;
+        }
+        
+        .keyword-highlight {
+            background: linear-gradient(135deg, #1ba098 0%, #6552D0 100%);
+            color: white;
+            padding: 0.125rem 0.375rem;
+            border-radius: 4px;
+            font-weight: 600;
+            box-shadow: 0 2px 4px rgba(27, 160, 152, 0.3);
+        }
 
-                    <div class="uploadtext">
-                        <p>Drag & Drop your file here</p>
-                        <p>or</p>
-                        <p>Click to select a file</p>
-                        <p>(Supported formats: .pdf, .docx)</p>
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .input-grid,
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+
+            header h1 {
+                font-size: 2rem;
+            }
+
+            .main-card {
+                padding: 1.5rem;
+            }
+        }
+
+        /* Hidden uploaded text display */
+        .uploaded-preview {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Resume Matcher</h1>
+            <p>Optimize your resume for ATS systems and identify missing keywords</p>
+        </header>
+
+        <div class="main-card">
+            <form id="resumeForm" action="/uploadform" method="POST">
+                <div class="input-grid">
+                    <div class="input-section">
+                        <label for="resume">Your Resume</label>
+                        <textarea 
+                            id="resume" 
+                            name="Resumedisplay" 
+                            placeholder="Paste your resume text here..."
+                            required
+                        ></textarea>
                     </div>
-                    <button type="submit" class="upload-btn" value ="Upload form " style="color:black;"> Upload Resume</button>
 
-                                    
+                    <div class="input-section">
+                        <label for="jobdesc">Job Description</label>
+                        <textarea 
+                            id="jobdesc" 
+                            name="jobdesc" 
+                            placeholder="Paste the job description here..."
+                            required
+                        ></textarea>
+                    </div>
+                </div>
+
+                <div class="button-group">
+                    <button type="button" class="btn-primary" onclick="analyzeMatch()">
+                        Analyze Match
+                    </button>
+                    <button type="button" class="btn-secondary" onclick="clearAll()">
+                        Clear All
+                    </button>
                 </div>
             </form>
-            <form action="/uploadform1" method="POST" autocomplete="off">
-                <label for="jobdesc">
-                       <h2> 💼 Paste your job description:</h2>
-                    </label>
-                <div class="upload-area1" id ="jobdesc-upload">
-                    
-                    <textarea id="jobdesc-textarea" name="jobdesc" rows="12" cols="60" placeholder="Paste your job description here..." required></textarea>
-                    <div class="uploadtext" name="jobdesc">
-                        <p>Paste your job description here:</p><br>
 
-                    </div>
-                    <button type="submit" class="upload-btn" value ="Submit job description"> Submit job description</button>
-
+            <!-- Results Section -->
+            <div id="results" class="results-section">
+                <div class="results-header">
+                    <h2>Analysis Results</h2>
+                    <div class="match-score" id="matchScore">0%</div>
+                    <p style="color: #718096; margin-top: 0.5rem;">Match Score</p>
                 </div>
 
-            </form>
-        </div>
-    <div style= "display: flex; gap:40px; justify-content: space-around;">
-       
-            {% if extractedText %}
-             <div id="Resume-display" style="border:1px solid #ccc; padding:10px; border-radius:8px; background:white;"></div>
+                <div class="stats-row">
+                    <div class="stat-item">
+                        <div class="stat-value" id="matchedCount">0</div>
+                        <div class="stat-label">Matched</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="missingCount" style="color: #f56565;">0</div>
+                        <div class="stat-label">Missing</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="totalCount">0</div>
+                        <div class="stat-label">Total Keywords</div>
+                    </div>
+                </div>
 
-            <script>
-                
-                var extractedText = {{ extractedText | tojson }};
+                <div class="results-grid">
+                    <div class="result-card matched">
+                        <h3><span class="icon">✓</span> Matched Keywords</h3>
+                        <div class="keyword-list" id="matchedKeywords"></div>
+                    </div>
 
-                document.getElementById('Resume-display').innerHTML = `<pre style="white-space: pre-wrap; word-wrap: break-word;">${extractedText}</pre>`;
-
-                </script>
-                {% else %}
-
-                {% endif %}
-                {% if extracted_tt %}
-                <div id="jobdesc-display" style="border:1px solid #ccc; padding:10px; border-radius:8px; background:white;"></div>
-
-                <script>
-                    var extractedTextt = {{ extracted_tt | tojson }};
-
-                    document.getElementById('jobdesc-display').innerHTML =`<pre style="white-space: pre-wrap; word-wrap: break-word;">${extractedTextt}</pre>`;
-
-                    </script>
-                    {% else %}
-
-                    {% endif %}
-
-                     
-                    <div style="position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);">
-
-                        <button onclick = "analyzeMatch()" class=" fixedanaa-btn">
-                                ✨ Analyze Match with ML
-                        </button>
-                     </div>
-                     <div id ="results" style="display: none;  justify-content: center;  background-color: white;padding: 30px; margin:20px 0; color: black;border-radius:10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
-
-                        <h3>📊 Match Analysis Results</h3> 
-                        <div id = "result-content"></div>
-                     </div>
-                     <script>
-                        async function analyzeMatch( ) {
-                            try{
-                                const response =await fetch('/simple_match');
-                                const data = await response.json();
-                                if (data.error){
-                                    alert(data.error);
-                                    return;
-                
-                                }
-                                document.getElementById('results').style.display='block';
-                                document.getElementById('result-content').innerHTML=`
-                                <h4>🎯 ${data.interpretation}</h4>
-                                <p><strong>Matching keywords:</strong> ${data.common_words.join(', ')}</p>
-                                <p><strong>Matching percentage:</strong> ${data.match_percentage}</p>
-                                <p><strong> Total Matches: </strong> ${data.total_common} out of ${data.job_word_count} job requirements</p>
-                                `;
-                                document.getElementById('results').scrollIntoView({behavior: 'smooth'});
-                            }
-                            catch(error){
-                                alert('Error analyzing macth:' + error.message);
-                            }            
-                        }
-                     </script>
-
+                    <div class="result-card missing">
+                        <h3><span class="icon">⚠</span> Missing Keywords</h3>
+                        <div class="keyword-list" id="missingKeywords"></div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-    
-    </body>
-</html>     
-               
+
+    <!-- Hidden elements for uploaded text (for backend compatibility) -->
+    <div class="uploaded-preview">
+        {% if extractedText %}
+        <div id="Resume-display">{{ extractedText }}</div>
+        {% endif %}
+        {% if extracted_tt %}
+        <div id="jobdesc-display">{{ extracted_tt }}</div>
+        {% endif %}
+    </div>
+
+    <script>
+        // Clear results on page load
+        window.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('results').style.display = 'none';
+        });
+
+        async function analyzeMatch() {
+            const resume = document.getElementById('resume').value.trim();
+            const jobdesc = document.getElementById('jobdesc').value.trim();
+
+            // Check if we have content in the textareas
+            const hasResumeContent = resume.length > 0;
+            const hasJobContent = jobdesc.length > 0;
+
+            if (!hasResumeContent || !hasJobContent) {
+                // If no content in textareas, try to analyze with existing session data
+                console.log('No content in textareas, checking existing session data...');
+
+                // Show loading state
+                const resultsDiv = document.getElementById('results');
+                resultsDiv.style.display = 'block';
+                resultsDiv.innerHTML = '<div class="loading"><div class="spinner"></div><p>Analyzing your resume...</p></div>';
+
+                try {
+                    // Try to get analysis with existing session data
+                    const analysisResponse = await fetch('/simple_match');
+                    if (!analysisResponse.ok) {
+                        throw new Error('Failed to analyze match');
+                    }
+
+                    const data = await analysisResponse.json();
+
+                    if (data.error) {
+                        // If no session data, prompt user to enter content
+                        alert('Please fill in both resume and job description fields first.');
+                        resultsDiv.style.display = 'none';
+                        return;
+                    }
+
+                    // Display results with existing session data
+                    displayResults(data);
+                    return;
+                } catch (error) {
+                    console.error('Error with existing session:', error);
+                    alert('Please fill in both resume and job description fields first.');
+                    resultsDiv.style.display = 'none';
+                    return;
+                }
+            }
+
+            // If we have content, proceed with upload and analysis
+            console.log('Uploading new content and analyzing...');
+
+            // Show loading state
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.style.display = 'block';
+            resultsDiv.innerHTML = '<div class="loading"><div class="spinner"></div><p>Analyzing your resume...</p></div>';
+
+            try {
+                // Upload both documents simultaneously
+                const [resumeResponse, jobResponse] = await Promise.all([
+                    fetch('/uploadform', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        body: new URLSearchParams({ 'Resumedisplay': resume })
+                    }),
+                    fetch('/uploadform1', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        body: new URLSearchParams({ 'jobdesc': jobdesc })
+                    })
+                ]);
+
+                // Check if both uploads succeeded
+                if (!resumeResponse.ok || !jobResponse.ok) {
+                    throw new Error('Failed to upload documents');
+                }
+
+                // Parse responses to ensure they were successful
+                const resumeData = await resumeResponse.json();
+                const jobData = await jobResponse.json();
+
+                if (resumeData.status !== 'success' || jobData.status !== 'success') {
+                    throw new Error('Upload failed');
+                }
+
+                // Now get analysis
+                const analysisResponse = await fetch('/simple_match');
+                if (!analysisResponse.ok) {
+                    throw new Error('Failed to analyze match');
+                }
+
+                const data = await analysisResponse.json();
+
+                if (data.error) {
+                    alert(data.error);
+                    resultsDiv.style.display = 'none';
+                    return;
+                }
+
+                // Display results
+                displayResults(data);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred during analysis: ' + error.message);
+                resultsDiv.style.display = 'none';
+
+                // Debug: Check session state
+                fetch('/debug').then(r => r.json()).then(data => {
+                    console.log('Session debug:', data);
+                });
+            }
+        }
+
+        function displayResults(data) {
+            // Rebuild the entire results section with the data
+            const resultsDiv = document.getElementById('results');
+            
+            // Build matched keywords HTML
+            let matchedHTML = '';
+            if (data.common_words && data.common_words.length > 0) {
+                data.common_words.forEach(word => {
+                    matchedHTML += `<span class="keyword-tag matched">${word}</span>`;
+                });
+            } else {
+                matchedHTML = '<p style="color: #718096;">No matching keywords found</p>';
+            }
+
+            // Build missing keywords HTML
+            let missingHTML = '';
+            if (data.missing_words && data.missing_words.length > 0) {
+                data.missing_words.forEach(word => {
+                    missingHTML += `<span class="keyword-tag missing">${word}</span>`;
+                });
+            } else {
+                missingHTML = '<p style="color: #718096;">No missing keywords - perfect match!</p>';
+            }
+
+            // Generate bullet point suggestions
+            let suggestionsHTML = '';
+            if (data.missing_words && data.missing_words.length > 0) {
+                const bulletPoints = generateBulletPoints(data.missing_words.slice(0, 5));
+                suggestionsHTML = `
+                    <div class="suggestions-section">
+                        <h3><span class="icon">💡</span> Suggested Resume Bullet Points</h3>
+                        <p style="color: #4a5568; margin-bottom: 1rem; font-size: 0.95rem;">
+                            Add these action-oriented bullet points to your resume to include missing keywords:
+                        </p>
+                        <ul class="bullet-points">
+                            ${bulletPoints.map(bp => `<li>${bp}</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+            }
+
+            // Set the complete HTML
+            resultsDiv.innerHTML = `
+                <div class="results-header">
+                    <h2>Analysis Results</h2>
+                    <div class="match-score">${data.match_percentage}%</div>
+                    <p style="color: #718096; margin-top: 0.5rem;">Match Score</p>
+                </div>
+
+                <div class="stats-row">
+                    <div class="stat-item">
+                        <div class="stat-value">${data.total_common}</div>
+                        <div class="stat-label">Matched</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" style="color: #deb992;">${data.total_missing}</div>
+                        <div class="stat-label">Missing</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">${data.job_word_count}</div>
+                        <div class="stat-label">Total Keywords</div>
+                    </div>
+                </div>
+
+                <div class="results-grid">
+                    <div class="result-card matched">
+                        <h3><span class="icon">✓</span> Matched Keywords</h3>
+                        <div class="keyword-list">${matchedHTML}</div>
+                    </div>
+
+                    <div class="result-card missing">
+                        <h3><span class="icon">⚠</span> Missing Keywords</h3>
+                        <div class="keyword-list">${missingHTML}</div>
+                    </div>
+                </div>
+                
+                ${suggestionsHTML}
+            `;
+
+            // Show results section
+            resultsDiv.style.display = 'block';
+            resultsDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        function generateBulletPoints(keywords) {
+            // Templates for different types of skills
+            const templates = [
+                {
+                    pattern: ['python', 'java', 'javascript', 'typescript', 'ruby', 'php', 'golang', 'rust', 'swift', 'kotlin'],
+                    template: (kw) => `Developed and maintained applications using <span class="keyword-highlight">${kw}</span>, improving system performance and code quality`
+                },
+                {
+                    pattern: ['react', 'angular', 'vue', 'svelte', 'nextjs', 'gatsby'],
+                    template: (kw) => `Built responsive user interfaces with <span class="keyword-highlight">${kw}</span>, enhancing user experience and engagement`
+                },
+                {
+                    pattern: ['docker', 'kubernetes', 'jenkins', 'gitlab', 'circleci', 'terraform'],
+                    template: (kw) => `Implemented CI/CD pipelines using <span class="keyword-highlight">${kw}</span>, reducing deployment time and increasing reliability`
+                },
+                {
+                    pattern: ['aws', 'azure', 'gcp', 'cloud'],
+                    template: (kw) => `Deployed and managed cloud infrastructure on <span class="keyword-highlight">${kw}</span>, optimizing costs and scalability`
+                },
+                {
+                    pattern: ['sql', 'mysql', 'postgresql', 'mongodb', 'redis', 'elasticsearch'],
+                    template: (kw) => `Designed and optimized database schemas using <span class="keyword-highlight">${kw}</span>, improving query performance by 40%`
+                },
+                {
+                    pattern: ['agile', 'scrum', 'kanban', 'jira'],
+                    template: (kw) => `Collaborated with cross-functional teams using <span class="keyword-highlight">${kw}</span> methodology to deliver projects on time`
+                },
+                {
+                    pattern: ['leadership', 'management', 'mentoring', 'coaching'],
+                    template: (kw) => `Demonstrated <span class="keyword-highlight">${kw}</span> by guiding team members and fostering professional development`
+                },
+                {
+                    pattern: ['testing', 'jest', 'pytest', 'selenium', 'cypress'],
+                    template: (kw) => `Implemented comprehensive test suites using <span class="keyword-highlight">${kw}</span>, achieving 90% code coverage`
+                },
+                {
+                    pattern: ['api', 'rest', 'graphql', 'microservices'],
+                    template: (kw) => `Designed and developed <span class="keyword-highlight">${kw}</span> architecture, enabling seamless integration across services`
+                },
+                {
+                    pattern: ['analytics', 'data', 'analysis', 'reporting'],
+                    template: (kw) => `Conducted <span class="keyword-highlight">${kw}</span> to drive data-informed decisions and identify optimization opportunities`
+                }
+            ];
+            
+            const bulletPoints = [];
+            const usedTemplates = new Set();
+            
+            for (const keyword of keywords) {
+                const kw = keyword.toLowerCase();
+                let matched = false;
+                
+                // Try to match with specific templates
+                for (const template of templates) {
+                    if (template.pattern.some(p => kw.includes(p) || p.includes(kw))) {
+                        if (!usedTemplates.has(template)) {
+                            bulletPoints.push(template.template(keyword));
+                            usedTemplates.add(template);
+                            matched = true;
+                            break;
+                        }
+                    }
+                }
+                
+                // Generic template if no specific match
+                if (!matched && bulletPoints.length < 5) {
+                    const genericTemplates = [
+                        `Utilized <span class="keyword-highlight">${keyword}</span> to enhance project outcomes and deliver high-quality solutions`,
+                        `Applied expertise in <span class="keyword-highlight">${keyword}</span> to solve complex technical challenges`,
+                        `Leveraged <span class="keyword-highlight">${keyword}</span> to streamline workflows and improve team productivity`,
+                        `Implemented <span class="keyword-highlight">${keyword}</span> best practices to ensure code quality and maintainability`,
+                        `Collaborated with stakeholders using <span class="keyword-highlight">${keyword}</span> to achieve business objectives`
+                    ];
+                    bulletPoints.push(genericTemplates[bulletPoints.length % genericTemplates.length]);
+                }
+                
+                if (bulletPoints.length >= 5) break;
+            }
+            
+            return bulletPoints;
+        }
+
+        function clearAll() {
+            document.getElementById('resume').value = '';
+            document.getElementById('jobdesc').value = '';
+            document.getElementById('results').style.display = 'none';
+            
+            // Clear session
+            fetch('/clear_session', { method: 'POST' });
+        }
+    </script>
+</body>
+</html>
