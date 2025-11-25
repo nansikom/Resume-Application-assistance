@@ -8,8 +8,7 @@ This project provides a comprehensive solution for resume customization and job 
 
 ## 🔗 Project Links
 
-- **Youtube Submission**: [Youtube Link]( Video link
-https://youtu.be/rp8lTPCU4-g)
+- **Youtube Submission**: [Youtube Link]( https://youtu.be/44M-OE9MEac)
 
 ## ✨ Key Features
 
@@ -51,10 +50,17 @@ https://youtu.be/rp8lTPCU4-g)
    ```bash
    python app.py
    ```
+   By default Flask runs on port 5000.
+
 
 4. **Access the Web Interface**
-   Navigate to: `http://127.0.0.1:5000`
+   Navigate to:  http://localhost:5000
 
+5. If you want other devices to reach the server, run Flask bound to all interfaces:
+   ```python
+   app.run(host='0.0.0.0', port=5000, debug=True)
+   ```
+   Then use `http://<YOUR_COMPUTER_IP>:5000` from other devices.
 ## 📦 Core Dependencies
 
 | Package | Version | Purpose |
@@ -103,7 +109,7 @@ resume-assistant/
 └── uploads/           # Temporary file storage
 ```
 ### A little preview 
-![Sample preview](img/resumepreview.png)
+![Sample preview](img/resumepreview2.png)
 
 ## 🌟 Future Enhancements
 
